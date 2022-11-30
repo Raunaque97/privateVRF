@@ -14,11 +14,13 @@ isReady.then(() => {
   const privateKey = PrivateKey.fromBase58(process.env.PRIVATE_KEY);
   const publicKey = privateKey.toPublicKey();
 
-  async function getData() {
+  async function getData(commitHash = undefined) {
     // generate 256bit randomness
     const random = Field.random();
     // create signature
-    const signature = Signature.create(privateKey, [random]);
+    const signature = commitHash
+      ? Signature.create(privateKey, [random, commitHash])
+      : Signature.create(privateKey, [random]);
 
     return {
       data: { random },
@@ -27,9 +29,13 @@ isReady.then(() => {
     };
   }
 
-  router.get("/", async (ctx) => {
-    ctx.body = await getData();
-  });
+  router
+    .get("/", async (ctx) => {
+      ctx.body = await getData();
+    })
+    .get("/:commit([0-9]*)", async (ctx) => {
+      ctx.body = await getData(Field(ctx.params.commit));
+    });
   app.use(router.routes()).use(router.allowedMethods());
   app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
