@@ -6,7 +6,7 @@ It's build following [this](https://docs.minaprotocol.com/zkapps/tutorials/oracl
 
 ## How it works?
 
-It's simple node.js backend which returns a random 256 random bits along with a signature, proving that the server generated the randomness. However to be more trustless the single server should be replaced with a decentralized group like chainlink's vrf, to make it difficult to corrupt.
+It's simple node.js backend which returns 256 random bits along with a signature, proving that the server generated the randomness. However to be more trustless the single server should be replaced with a decentralized group like chainlink's vrf(MPC), to make it difficult to corrupt.
 
 #### how it is private
 
